@@ -1,0 +1,5 @@
+questions: 
+
+0. why two tasks (gyro and control) and not a single one?
+1. do we need to specify the values with variables, or is it ok with constants
+2. do i need to do uf_update_speed when inititalizing?

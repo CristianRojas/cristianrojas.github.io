@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>Lego Segway Challenge: an introduction to embedded control</title>
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Lego Segway Challenge: an introduction to embedded control</h1>
+</div>
+</div>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-item"><a href="index.html">Introduction</a></div>
+<div class="menu-category">Basic Analysis</div>
+<div class="menu-item"><a href="model.html">Modeling</a></div>
+<div class="menu-item"><a href="analysis.html">Analysis</a></div>
+<div class="menu-item"><a href="pcontrol.html">Controller&nbsp;Design</a></div>
+<div class="menu-category">Implementation</div>
+<div class="menu-item"><a href="imp.html" class="current">Control&nbsp;architecture</a></div>
+<div class="menu-item"><a href="crane.html">A&nbsp;LEGO&nbsp;crane</a></div>
+<div class="menu-item"><a href="inverted.html">Controller&nbsp;implementation</a></div>
+<div class="menu-item"><a href="action.html">Crane&nbsp;controller&nbsp;in&nbsp;action</a></div>
+<div class="menu-item"><a href="move.html">Controlling&nbsp;the&nbsp;base</a></div>
+<div class="menu-category">The Challenge!</div>
+<div class="menu-item"><a href="rules.html">Rules</a></div>
+<div class="menu-item"><a href="tips.html">Tips&nbsp;and&nbsp;tricks</a></div>
+<div class="menu-category">To Probe Further</div>
+<div class="menu-item"><a href="control.html">References</a></div>
+<div class="menu-item"><a href="contact.html">Credits&nbsp;and&nbsp;contact</a></div>
+</td>
+<td id="layout-content">
+<p>Our analysis so far has revealed a very simple way of controlling the inverted pendulum to balance around its upright equilibrium: we should simply generate a force which is proportional to the angular deviation and rate of deviation
+<br />
+<img class="eqwl" src="eqs/182282143-130.png" alt=" T(t) = -k_p theta(t)-k_ddot{theta}(t) " />
+<br />
+This balancing act requires three essential steps</p>
+<ol>
+<li><p>Measuring, or <i>sensing</i>, the angle <img class="eq" src="eqs/312907090-130.png" alt="theta" style="vertical-align: -1px" /> and the angular rate <img class="eq" src="eqs/1458682473-130.png" alt="dot{theta}" style="vertical-align: -1px" />. </p>
+</li>
+<li><p><i>Computing</i> the desired control action <img class="eq" src="eqs/1273307595-130.png" alt="T(t)" style="vertical-align: -5px" /></p>
+</li>
+<li><p>Generating, or <i>actuating</i>, the required torque</p>
+</li>
+</ol>
+<p>This sensing-computing-actuating chain of operations, illustrated in the figure below, can be found in all control systems. The quality of the sensors, control algorithms and actuators all influence if, and how well, we can control a given physical object.  </p>
+<p><br />
+<img class="eqwl" src="eqs/738618638-130.png" alt=" setlength{unitlength}{1mm} begin{picture}(110,50) put(15,35){vector(1,0){10}} put(25,25){framebox(20,20){textrm{Sensors}}} put(45,35){vector(1,0){10}} put(55,25){framebox(20,20){textrm{Computer}}} put(75,35){vector(1,0){10}} put(85,25){framebox(20,20){textrm{Actuators}}} put(105,35){vector(1,0){10}} end{picture} " />
+<br /></p>
+<p>For the inverted pendulum, there are many possible ways of sensing the angle; many control algorithms that can stabilize the pendulum; and many ways of generating the appropriate torque. Let&rsquo;s go through some of our options before we start developing our physical system and control solution.</p>
+<h2>Sensors </h2>
+<p>The angle <img class="eq" src="eqs/312907090-130.png" alt="theta" style="vertical-align: -1px" /> could be measured by digital encoders at its base, or be computed by integrating measurements of the rate-of-change <img class="eq" src="eqs/1458682473-130.png" alt="dot{theta}" style="vertical-align: -1px" />. The angular rate-of-change <img class="eq" src="eqs/1458682473-130.png" alt="dot{theta}" style="vertical-align: -1px" />, in turn, can be measured by a gyro sensor, or be computed by integrating a measurement of its acceleration. Finally, the acceleration <img class="eq" src="eqs/1753039356-130.png" alt="ddot{theta}" style="vertical-align: -1px" /> can be measured by an accelerometer. Let&rsquo;s describe these solutions in some more detail.</p>
+<h3>Digital encoders</h3>
+<p>The motors in the LEGO mindstorm kit have built in encoders that give a digital value of the angle of the motors. Thus, if a motor is used to generate the required torque, it can also be used to give information about the angle at the base of the pendulum. </p>
+<h3>Gyro sensor</h3>
+<p>A gyro sensor gives the rate of rotation <img class="eq" src="eqs/1458682473-130.png" alt="dot{theta}" style="vertical-align: -1px" />. Here we are also using a <a href="http://www.hitechnic.com/contents/en-us/d24.html">HiTechnic Gyro Sensor </a> which can give the rotation of up to <img class="eq" src="eqs/1484116703-130.png" alt="pm 360" style="vertical-align: -1px" /> degrees per second. </p>
+<p>A problem with gyro sensors is that they have a little bit of offset, i.e. the gyro always shows a non-zero value even if the velocity is zero. This problem is more pronounced when we integrate the gyro readings to estimate the true angle, since the offset in the angle estimates will increase linearly with time. Thus, to give a proper velocity reading the gyro has to be calibrated. A common (and very simple) way of doing this is to compute the offset prior to operation and then subtracting this value from the gyro readings. The offset can be measured by keeping the gyro stable for a couple of seconds and averaging the readings. See below for the raw values, integration of these and the drift when not taken care of.</p>
+<p><img class="eq" src="Pic/drift.png" alt="Drift" style="vertical-align: -1px" width="800" /></p>
+<h3>Accelerometer/Tilt sensor</h3>
+<p>The <a href="http://www.hitechnic.com/contents/en-us/d19.html">accelerometer sensor </a> from HiTechnic can estimate the acceleration in <img class="eq" src="eqs/1819822983-130.png" alt="x" style="vertical-align: -1px" />, <img class="eq" src="eqs/1691822600-130.png" alt="y" style="vertical-align: -4px" /> and <img class="eq" src="eqs/1563822213-130.png" alt="z" style="vertical-align: -1px" /> directions. The tilt could potentially be calculated by looking at how much the value of the gravitational acceleration differs from the measured acceleration in one direction. However, as shown below, the raw accelerometer reading is very noisy and must be filtered prior to use. </p>
+<h3>Evaluating sensor quality </h3>
+<p>The figure below shows angular measurement from a real pendulum. Each of the three sensor solutions have its own problems. The digital encoder is mesuring the angle at the base. Since the pendulum in this case is not completely stiff, the measurments get distorted each time the pendulum changes direction. </p>
+<p>The problem with the gyro solution is that since the angle estimate is obtained by integration and hence does not react to fast changes as quickly as the other sensors. But the positive side is that the sensor has high accuracy and very little noise.</p>
+<p>As for the accelerometer, it reacts quickly to changes but is very noisy. </p>
+<p><img class="eq" src="Pic/jamforelse.png" alt="Data" style="vertical-align: -1px" /></p>
+<h2>Computing the control signal</h2>
+<p>All computations take place in the LEGO NXT embedded computer. The controller program will repeatedly read the sensors, compute the desired control signal, and command the motors to generate the required torque. We will devote a complete section to programming later in this tutorial, so let&rsquo;s skip this for now.</p>
+<h2>Actuators </h2>
+<p>The only actuators that we have at our command are the motors that come with the Mindstorm kit. The motors can be commanded to generate <img class="eq" src="eqs/1892851664-130.png" alt="pm 100%" style="vertical-align: -1px" />  of maximum power. The power is assumed to be proportional to the torque by some unknown constant, which needs to be estimated or tuned by trial and error <a href="crane.html">[continue &raquo;]</a>. </p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2009-03-16 19:34:15 CET, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

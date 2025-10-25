@@ -1,0 +1,24 @@
+# jemdoc: menu{MENU}{program.html}, fwtitle
+= Inverted Pendulum Control - A Lego Mindstorm SegWay  
+
+
+== Programing Lego Mindstorm
+
+Now that we know how what information we need we can start by looking at how to acquire it and how to use it. We want a way to process the information given by the sensors, calculate the desired output and aply it to the motors. Fortunatly Lego provides this functionality (and a lot more) in it Mindstorm unit.
+
+The Mindstorm block can be programmed in a few completely different ways - from using the built in tool on the block, to using a low level language very similar to assembler. What will be used in this exampel is the programming language Not eXactly C (NXC). It is a language that is fast but still intuitive to people with only a small experience in programming. It is based on C with the addition of some extra commands to interface with the mindstorm unit. Assumed is basic programming skills.
+
+=== Not eXactly C
+
+There is a lot of resourses online covering exactly how to program C and NXC so there is no use trying to explain what other already have done better. Below is a list of resources that will be helpful when programming.
+
+{{<a href="http://bricxcc.sourceforge.net/nbc/nxcdoc/index.html">Not eXactly C Documentation </a> <p>
+<a href="http://www.hitechnic.com">HiTechnic Guides </a><p>
+<a href="http://www.hitechnic.com/contents/en-us/d24.html">HiTechnic Gyro Sensor </a><p>
+<a href="http://www.hitechnic.com/contents/en-us/d19.html">HiTechnic Acceleration Sensor </a>}}
+
+=== Bricx Command Center
+
+To be able to program in NXC you need a compiler. The easiest one to use is Bricx Command Center which also includes a GUI and debugger. See {{<a href="http://bricxcc.sourceforge.net/">BricxCC</a>}} for download and guides. When you have familiarized yourself with NXC and set up so that NXC is owrking on you Mindstorm unit, move on to the next section.
+
+ 

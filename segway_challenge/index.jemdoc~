@@ -1,0 +1,39 @@
+# jemdoc: menu{MENU}{index.html}, fwtitle
+= Lego Segway Challenge: an introduction to embedded control
+
+== The Segway Personal Transporter
+
+The Segway personal transporter is a two-wheeled, self-balanced
+electrical vehicle produced by Segway, Inc. Computers and motors in
+the base of the device keep the Segway upright, and the user steers
+the vehicle by simply leaning in the direction she wants to
+go. Gyroscopic sensors are used to detect the tilting of the device
+(which indicates departure from perfect balance) and motors driving
+the wheels are commanded as needed to bring the vehicule back into
+balance. If you have never seen a Segway in action, please take your
+time to watch the promotional video clip below.
+
+{{<center><object width="425" height="344"><param name="movie"
+value="http://www.youtube.com/v/B-1hl05cqJM&hl=en&fs=1"></param><param
+name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/B-1hl05cqJM&hl=en&fs=1"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="425"
+height="344"></embed></object></center>}}
+
+In this tutorial, we are going to build and control a Segway-like
+vehicle in LEGO Mindstorms. We will show how /control theory/ can be
+used to develop simple and powerful strategies for maintaining the
+vehicle in balance. We will not dive into the theory in its fullest
+generality, but simply combine things you already know from high
+school physics and math. This will allow us to build a model of the
+vehicle dynamics and find out how the motors should be controlled to
+maintain balance. In doing so, we will reinvent the so-called "PD-controller" and use it to transform measurements of the tilt angle into the
+appropriate acceleration that should be supplied by the motors. We
+will discuss various way of measuring the tilt angle of the device,
+and show how the proposed controller can be implemented in the LEGO
+Mindstorm hardware.
+
+Afte the tutorial, we hope that you will have a basic insight into the use of control theory and that you will feel ready to make your Segway clone more than balance - to move and win the Segway challenge!
+

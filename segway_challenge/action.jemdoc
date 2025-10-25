@@ -1,0 +1,9 @@
+# jemdoc: menu{MENU}{action.html}, fwtitle
+= Lego Segway Challenge: an introduction to embedded control
+
+The video clip below demonstrates the LEGO crane, and the controller code that we just developed, in action. Note the amazing improvements the controller brings in dampening out the oscillations of the pendulum.  
+
+{{<center><EMBED SRC="Video/pendulum.mpeg" WIDTH=400 HEIGHT=300 AUTOSTART=TRUE></center>}}\n
+
+
+As you can see, introducing the moving base instead of a tourque has a drawback, in that the base tends to drift away from its starting position. In fact, we have many possible solutions with $x, \dot{x} \neq 0$ although $\dot{\theta}=0$, so the base might end up moving or coming to rest at a completely different position from where it started. The next, and final, tutorial page illustrates how we managed to eliminate this problem.

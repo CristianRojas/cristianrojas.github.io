@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>Lego Segway Challenge: an introduction to embedded control</title>
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Lego Segway Challenge: an introduction to embedded control</h1>
+</div>
+</div>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-item"><a href="index.html">Introduction</a></div>
+<div class="menu-category">Basic Analysis</div>
+<div class="menu-item"><a href="model.html">Modeling</a></div>
+<div class="menu-item"><a href="analysis.html">Analysis</a></div>
+<div class="menu-item"><a href="pcontrol.html">Controller&nbsp;Design</a></div>
+<div class="menu-category">Implementation</div>
+<div class="menu-item"><a href="imp.html">Control&nbsp;architecture</a></div>
+<div class="menu-item"><a href="crane.html">A&nbsp;LEGO&nbsp;crane</a></div>
+<div class="menu-item"><a href="inverted.html" class="current">Controller&nbsp;implementation</a></div>
+<div class="menu-item"><a href="action.html">Crane&nbsp;controller&nbsp;in&nbsp;action</a></div>
+<div class="menu-item"><a href="move.html">Controlling&nbsp;the&nbsp;base</a></div>
+<div class="menu-category">The Challenge!</div>
+<div class="menu-item"><a href="rules.html">Rules</a></div>
+<div class="menu-item"><a href="tips.html">Tips&nbsp;and&nbsp;tricks</a></div>
+<div class="menu-category">To Probe Further</div>
+<div class="menu-item"><a href="control.html">References</a></div>
+<div class="menu-item"><a href="contact.html">Credits&nbsp;and&nbsp;contact</a></div>
+</td>
+<td id="layout-content">
+<p>The Mindstorm &ldquo;brick&rdquo; can be programmed in a few completely different ways - from using a low-level language similar to assembler to using the built-in high-level tool in the the brick itself.  We will use the programming language Not eXactly C (NXC), which is based on C with the addition of some extra commands to interface with the mindstorm unit. The language is fast but still intuitive to people with only a limited programming experience.</p>
+<p>The development environment for NXC is called the &ldquo;Bricx command center&rdquo; and is available free of charge from <a href="http://bricxcc.sourceforge.net/">sourceforge</a>. Please, take some time to download, install and familiarize yourself with Bricx command center, and set up so that NXC works on your mindstorm unit.</p>
+<p>The basic guide for the NXC language is the <a href="http://bricxcc.sourceforge.net/nbc/nxcdoc/index.html">Not eXactly C Documentation </a>, and more detailed information on how to program the hitechnic gyro can be found at the <a href="http://www.hitechnic.com">manufacturer's site</a>.</p>
+<h2>Controller implementation</h2>
+<h3>Basic structure</h3>
+<p>An NXC program is composed of code blocks and variables. There are two distinct types of code blocks: tasks and functions. A program must always have at least one task - named &ldquo;main&rdquo; - which is started whenever the program is run. Thus, our code will have the basic structure</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+#include "NXCDefs.h"
+
+// Definition of constants
+#define GYRO_PORT IN_1
+
+// Definition of variables
+
+
+// The main task
+task main() {
+
+     initMotors()
+     calibrateGyro()
+     precedes(readGyroSensor,computeControlAction)
+
+}
+</pre></div></div>
+<p>Here, the function &ldquo;initMotors()&rdquo; and &ldquo;calibrateGyro()&rdquo; are run once to initialize the system, while the precedes command schedules the two tasks &ldquo;readGyroSensor&rdquo; and &ldquo;computeControlAction&rdquo; which will carry out the actual control.</p>
+<h3>Initializing Motors</h3>
+<p>To initialize the motors, we will use the &ldquo;setOutput&rdquo; command. The syntax is</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+setOutput(port, field1, value1, ..., fieldN, valueN)
+</pre></div></div>
+<p>where port is a constant defining the relevant port (or ports), field1 to fieldN are constants defining the various properties of the port, while value1 to valueN are the associated values we would like to assign to the different properties. Please refer to the NXC manual for a complete list of the available properties and values.</p>
+<p>We will use the code below which addresses the motors via ports A and C. </p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+
+void initializeMotors() {
+     SetOutput(OUT_AC,
+		OutputMode, OUT_MODE_MOTORON+OUT_MODE_BRAKE,
+		RegMode, OUT_REGMODE_SYNC+OUT_REGMODE_IDLE,
+		RunState, OUT_RUNSTATE_RUNNING,
+		UpdateFlags, UF_UPDATE_MODE)
+}
+</pre></div></div>
+<p>Here, the OutputMode field says that the motors should be turned on with their electronic brakes enabled. The RegMode states that the firmware should try to keep the two motors synchronized irrespectively of load, but not apply any lower-level velocity control. The RunState is set to allow us to specify the desired motor power, while the UpdateFlags is set to commit the changes to property values that we have specified.</p>
+<h3>Calibrating the gyro</h3>
+<p>The gyro can be read by the &ldquo;SensorRaw&rdquo; command, as follows</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+Gyro_reading=SensorRaw(GYRO_PORT);
+</pre></div></div>
+<p>The reading is a value from 0 to 1240. This value is offset by two things, first the fact that the value is from 0&ndash;1240 (not from -620 &ndash; 620) and secondly by the drift in the sensor. The range is corrected by subtracting 620 (variable GYRO_ZERO) from the read value, while the drift has to be estimated. </p>
+<p>We calculate the drift term by reading the gyro multiple times while making sure that the actual pendulum angle is kept constant. The average of our readings is used to form an estimate of the offset, see the code below.</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+#define GYRO_ZERO 620
+#define N_CALIBRATION_SAMPLES 100
+#define TSAMP_CALIBRATION 10
+
+long gyroDrift=0;
+...
+void calibrateSensor() {
+	gyroDrift=0;
+	for (int i=1; i&lt;=N_CALIBRATION_SAMPLES ;i++) {
+		gyroDrift=gyroDrift+SensorRaw(GYRO_PORT)-GYRO_ZERO;
+		Wait(TSAMP_CALIBRATION);
+	}
+	gyroDrift=gyroDrift/N_CALIBRATION_SAMPLES;
+}
+</pre></div></div>
+<p>Note that we use the &ldquo;Wait()&rdquo; command to wait a prespecified time (the sampling time for the calibration process) before taking the next reading. There is a slightly better way of maintaining an accurate sampling time, as we will see below, but this approach is sufficient for the calibration phase. </p>
+<p>Note that in the end, the correct wa of reading the angular rate from the sensor becomes</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+Gyro_value = SensorRaw(GYRO_PORT)-GYRO_ZERO-gyroDrift;
+</pre></div></div>
+<h3>Getting angle and angular rate from the gyro</h3>
+<p>When the controller is running, we will continuously need to acquire information about the angle and the angular rate. To this end, we use a separate task to read and process the gyro measurements. The task performs a new reading every 10 milliseconds, and estimates the angle by integrating the rate measurements from the gyro. For this to work the integration have to start when the pendulum is hanging straight down and perfectly still.</p>
+<p>We use the approximation
+<br />
+<img class="eqwl" src="eqs/1669763010-130.png" alt=" int_0^T x(t), dt approx x(0)+T x(T) " />
+<br />
+to implement the integration in a simple way. The complete code for reading the gyro becomes</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+#define GYRO_ZERO 620
+#define GYRO_PERIOD 10
+
+long gyroDrift=0;
+long gyroValue=0;
+long gyroAngle=0;
+long gyroTime=0;
+...
+task readGyroSensor() {
+	while(true){
+		gyroTime=CurrentTick();
+		gyroValue = SensorRaw(GYRO_PORT)-GYRO_ZERO-gyroDrift;
+		gyroAngle = gyroAngle+gyroValue*GYRO_PERIOD/1000;
+		Wait(GYRO_PERIOD-CurrentTick()+gyroTime);
+	}
+}
+</pre></div></div>
+<p>Note the slightly more sophisticated way of maintaining and accurate sampling time. We get system time (via the &ldquo;CurrentTick()&rdquo; function) before executing the key operations, and then wait for the period minus the time that it took to run the key operations. </p>
+<h3>Computing the control action and commanding the motors</h3>
+<p>The required motor power is calculated using the PD-control algorithm that we derived earlier. Again, the controller computations are put in a special task, which is executed every 10 milliseconds:</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+
+#define L1
+#define L2
+#define SCALE
+#define CONTROLLER_PERIOD 10
+
+int power=0;
+...
+
+task computeControlAction() {
+     while (true){
+         controlTime=CurrentTick();
+         power=(-L1*gyroAngle-L2*gyroValue)/SCALE;
+         if (power &gt; 100) {
+             power = 100;
+         } else if (power &lt; -100) {
+             power = -100;
+         }
+         SetOutput(OUT_AC,
+		UpdateFlags, UF_UPDATE_SPEED,
+		Power, power);
+         Wait(CONTROLLER_PERIOD-CurrentTick()+time);
+     }
+}
+</pre></div></div>
+<p>Here the constants L1 and L2 are similar to <img class="eq" src="eqs/1998893687-130.png" alt="K_p" style="vertical-align: -6px" /> and <img class="eq" src="eqs/1998893667-130.png" alt="K_d" style="vertical-align: -4px" /> and defines the relative value between the inputs. The scale constant exists to scale the power since the input is defined as an integer (no decimal). Since the power input is limited to <img class="eq" src="eqs/1362090657-130.png" alt="pm 100" style="vertical-align: -1px" />, the next couple of lines limits the actual power if the computed value exceeds <img class="eq" src="eqs/1362090657-130.png" alt="pm 100" style="vertical-align: -1px" />. Finally, the output is set and the task waits until the next sampling instant. </p>
+<h3>Choosing the constants</h3>
+<p>To choose the constants L1, L2 and SCALE to give good performance, we propose to use the results from the analysis section to get the appropriate relation between <img class="eq" src="eqs/468320727-130.png" alt="L1" style="vertical-align: -0px" /> and <img class="eq" src="eqs/468320724-130.png" alt="L2" style="vertical-align: -0px" />, while the SCALE constant can then be tuned using trial-and-error.</p>
+<p>The choise of sampling interval also plays a role. Since our analysis is performed in continuous time, one might conjecture that shorter sampling times will result in better performance. This is only partly true, and computational limitations in the Mindstorm unit leads us to recommend a samplig period of 10-50 ms. </p>
+<h2>Resulting program</h2>
+<p>The copmlete code can be found <a href="program/pend_no_position_control.nxc">here</a>. Download it and run it on your Mindstorm, to see if you can get it to work. If you continue the tutorial, you will soon see how the solution worked out for us <a href="action.html">[continue &raquo;]</a>. </p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2009-03-16 19:34:15 CET, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

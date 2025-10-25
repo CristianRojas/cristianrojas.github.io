@@ -1,0 +1,95 @@
+#include "NXCDefs.h"
+
+#define GYRO_PORT IN_4        //Gyro on port 1
+#define GYRO_Offset 620       //Offset value for the Gyro
+#define PERIOD 20   		//Update frequency
+#define PERIOD_Gyro 10		//Update frequency for the Gyro
+
+
+// Constants for power
+// Observe that all variables are multiplied with 100 to compensate for lack of decimal.
+#define L1                     300
+#define L2                     30
+#define L3                     30
+#define L4                     5
+#define L5                     30
+#define Scale                  40
+
+long Gyro_value;
+long drift=-35;             //A good estimation of the drift for my sensor
+long Gyro_angle=0;
+long time_g;
+
+int power,count,time;
+
+byte theUF;                                     // Update Flags
+byte theOM = OUT_MODE_MOTORON+OUT_MODE_BRAKE;   // Out Mode
+byte theRM = OUT_REGMODE_IDLE+OUT_REGMODE_SYNC; // Reg Mode
+byte theRS = OUT_RUNSTATE_RUNNING;              // Run State
+
+// Function to read the sensor value and calculate the drift.
+
+void calibrateSensor() {
+     TextOut(12, LCD_LINE3, "Calibrating!");
+     TextOut(12, LCD_LINE4, file);
+     drift=0;
+     for (int i=1; i<1001 ;i++) {
+          drift=drift+SensorRaw(GYRO_PORT)-GYRO_Offset;
+          // NumOut(46, LCD_LINE5, drift);
+          Wait(10);
+     }
+     drift=drift/10;                         
+     ClearScreen();
+     TextOut(10, LCD_LINE3, "drift is:");
+     NumOut(46, LCD_LINE5, drift);
+     Wait(3000);
+     ClearScreen();
+
+}
+
+//Task for reading gyro value
+task gyro() {
+	while (true) {        
+	time_g=CurrentTick();
+	Gyro_value = SensorRaw(GYRO_PORT)-GYRO_Offset-drift;
+
+	// Integration of gyro value to create angle
+
+	Gyro_angle = Gyro_angle+Gyro_value*PERIOD_Gyro/1000; 
+	time_g=PERIOD_Gyro-CurrentTick()+time_g ;
+	Wait(time_g);
+}
+
+//Task that stabilizes the pendulum
+
+task balance() {
+
+     while (true) {
+
+         time=CurrentTick();
+ 	   power=(-Gyro_angle*L1-Gyro_value*L2)/Scale;
+         // With position control         
+
+   	   if (power > 100) {
+             power = 100;
+         } else if (power < -100) {
+             power = -100;
+         }
+         SetOutput(OUT_AC, UpdateFlags, theUF, Power, power);
+
+         time=PERIOD-CurrentTick()+time;
+         Wait(time);
+     }
+}
+
+task main() {
+
+     theUF = UF_UPDATE_SPEED+UF_UPDATE_MODE;
+     SetOutput(OUT_AC, OutputMode, theOM, RegMode, theRM, RunState, theRS, UpdateFlags, theUF, Power, power);
+     theUF = UF_UPDATE_SPEED;
+
+     calibrateSensor(); //Calibrate the sensor. Comment away if you want to use the predefined value. 
+     Precedes(balance,gyro);
+
+}
+

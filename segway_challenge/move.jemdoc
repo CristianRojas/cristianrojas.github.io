@@ -1,0 +1,101 @@
+# jemdoc: menu{MENU}{move.html}, fwtitle
+= Lego Segway Challenge: an introduction to embedded control
+
+It was apparently too simplistic to remove the base from our design, so let's re-introduce it in the figure below.
+
+{{<center> <img class="eq" src="Pic/invert.png" alt="Data" height="200"/> </center>}}
+
+
+We are now interested in designing a controller which dampens out the oscillations of the pendulum while forcing the base to come to a rest close to the initial position. 
+
+== Movement and Position Control
+
+The best way to control the position is by introducing feedback from the position error (/i.e./ the difference between the desired and actual position of the base). We can use the digital encoders on the motors to measure the position of the base, and use a so-called PID co as input and create a PID controller to stabilize the position. 
+
+=== Encoder values
+
+The first thing we need is acquire the state of the encoder. Here we are only looking at moving straight so we take the average of the two encoders by doing
+
+~~
+{}{}
+int Motor_count=0;
+...
+Motor_count=(MotorTachoCount(OUT_A)+MotorTachoCount(OUT_C))/2;
+~~
+=== Speed
+But we also want to make sure that we have the speed of the base. By remembering the definition of the derivate we can get the derivation as
+\( 
+	x_d(n)=\frac{x(n)-x(n-1)}{T} 
+\)
+Where $x(n)$ is the position at sample $n$ and T is the sampling time. In NXC this would be implemented as
+~~
+{}{}
+int Motor_speed=0;
+int Motor_count=0;
+int Motor_old=0;
+...
+
+Motor_old=Motor_count;
+Motor_count=(MotorTachoCount(OUT_A)+MotorTachoCount(OUT_C))/2;
+Motor_speed=(Motor_count-Motor_old)*1000/PERIOD;
+~~
+
+=== Integration
+
+To make the base being able to handle slopes and have better behaviour (once again, see a course in automatic control systems for more information) we need an intergration of the position aswell. De definition of integral gives
+\( 
+	x_i(n)=x_i(n-1)+Tx(n) 
+\)
+With the same definitions as above. In NXT this is implemented as
+~~
+{}{}
+int Motor_int=0;
+...
+Motor_count=(MotorTachoCount(OUT_A)+MotorTachoCount(OUT_C))/2;
+Motor_int=Motor_int+Motor_count*PERIOD/1000;
+~~
+== Movement
+
+If we want the base to have a certain speed or move from one point to another we can do this by introducing reference variables. These are then subtracted from the position or speed.
+~~
+{}{}
+int ref_pos=5;
+int ref_speed=0;
+
+...
+Motor_count=((MotorTachoCount(OUT_A)+MotorTachoCount(OUT_C))/2)-ref_pos;
+
+...
+Motor_speed=Motor_speed-ref_speed;
+~~
+
+== Calculation Output
+
+These variables are then used to calculate an addition to the power in the same way as in the case with the angle stabilizing.
+~~
+{}{}
+#define L3                     
+#define L4                     
+#define L5                     
+
+int Motor_speed=0;
+int Motor_count=0;
+int Motor_old=0;
+int Motor_int=0;
+...
+
+Motor_old=Motor_count;
+Motor_count=(MotorTachoCount(OUT_A)+MotorTachoCount(OUT_C))/2;
+Motor_speed=(Motor_count-Motor_old)*1000/PERIOD;
+Motor_int=Motor_int+Motor_count*PERIOD/1000;
+         
+power_position=(Motor_count*L3+Motor_speed*L4+Motor_int*L5)/Scale;
+~~
+
+The constants L3, L4 and L5 tunes the effect. Note that power_position should be a lot smaller then the power output from the angle control. 
+
+== Resulting robot and program
+
+The complete code for the controller which combines the pendulum and position control can be found {{<a href="program/pend_no_position_control.nxc">here</a>}}. If you understand everything so far, then you are very well set for the Segway Challenge! Good luck!
+
+

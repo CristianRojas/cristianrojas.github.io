@@ -1,0 +1,10 @@
+# jemdoc: menu{MENU}{rules.html}, fwtitle
+= Lego Segway Challenge: an introduction to embedded control
+
+The Segway challenge consists of building a Segway-like vehicle in LEGO Mindstorms, and designing a control system which gives it superior performance to that of your competitors. We are going to run two competitions:
+
+. Marathon balancing: try to make your Segway balance for as long time as possible
+
+. The 10 meter dash: have your Segway drive 10 meter in a better time than your competitor. 
+
+You are free in your physical construction, and in the design and coding of the control  algorithm. However, to make the competition fair and interesting, we impose the following restrictions on your design:

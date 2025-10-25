@@ -1,0 +1,20 @@
+Introduction	[index.html]
+
+Basic Analysis
+	Modeling [model.html]
+	Analysis	[analysis.html]
+	Controller Design	[pcontrol.html]
+
+Implementation 
+	Control architecture	[imp.html]
+	A LEGO crane [crane.html]	
+	Controller implementation [inverted.html]
+	Crane control in action [action.html]
+	Movement Control [move.html]
+
+The Challenge!
+	Rules	[rules.html]
+	Tips and tricks	[tips.html]
+	
+To Probe Further
+	References	[control.html]	

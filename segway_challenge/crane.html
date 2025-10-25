@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>Lego Segway Challenge: an introduction to embedded control</title>
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Lego Segway Challenge: an introduction to embedded control</h1>
+</div>
+</div>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-item"><a href="index.html">Introduction</a></div>
+<div class="menu-category">Basic Analysis</div>
+<div class="menu-item"><a href="model.html">Modeling</a></div>
+<div class="menu-item"><a href="analysis.html">Analysis</a></div>
+<div class="menu-item"><a href="pcontrol.html">Controller&nbsp;Design</a></div>
+<div class="menu-category">Implementation</div>
+<div class="menu-item"><a href="imp.html">Control&nbsp;architecture</a></div>
+<div class="menu-item"><a href="crane.html" class="current">A&nbsp;LEGO&nbsp;crane</a></div>
+<div class="menu-item"><a href="inverted.html">Controller&nbsp;implementation</a></div>
+<div class="menu-item"><a href="action.html">Crane&nbsp;controller&nbsp;in&nbsp;action</a></div>
+<div class="menu-item"><a href="move.html">Controlling&nbsp;the&nbsp;base</a></div>
+<div class="menu-category">The Challenge!</div>
+<div class="menu-item"><a href="rules.html">Rules</a></div>
+<div class="menu-item"><a href="tips.html">Tips&nbsp;and&nbsp;tricks</a></div>
+<div class="menu-category">To Probe Further</div>
+<div class="menu-item"><a href="control.html">References</a></div>
+<div class="menu-item"><a href="contact.html">Credits&nbsp;and&nbsp;contact</a></div>
+</td>
+<td id="layout-content">
+<p>To go further into the details, without giving away the solution to the Segway race, we will help you to develop a controller for the pendulum (as opposed to the inverted pendulum). As you have seen in the modelling section, the two models only differ by a sign-change in one of the terms, so you will have to go over the maths again to design the Segway control system. But let&rsquo;s worry about that later - now it is time to bring out your LEGO kits and start building!</p>
+<h2>A LEGO overhead crane</h2>
+<p>We are going to show you how the analysis that we have done so far can be used to develop a controller for the LEGO vehicle below. The vertical arm hangs freely (and thus behaves like a pendulum) while motors allow to accelerate the main body of the vehicle. The complete assembly instructions can be found here. </p>
+<p><center><img class="eq" src="Pic/pendel_robot.png" alt="Picture of" style="vertical-align: -1px" /></center></p>
+<p>Our vehicle does not ressemble a Segway, but looks more like the <i>overhead cranes</i> you can find transporting heavy goods in harbours and industries. Overhead cranes have control systems that elimitate the natural swinging of the goods when the vehicle changes position. Since the mathematical models describing the dynamics of the crane and of a Segway vehicle is so similar, understanding how to control the crane will be useful for you in the Segway challenge. </p>
+<p>Specifically, our initial design will use a gyro to measure the angle and its rate-of-change, and compute the desired torque using a PD-controller
+<br />
+<img class="eqwl" src="eqs/462611745-130.png" alt=" T(t) = -k_p theta(t)-k_ddot{theta}(t)qquadqquadquad;;, (1) " />
+<br />
+Note that the gyro should be connected to port 1, and the motors to port A and C, respectively.</p>
+<p>Once you have assembled the vehicle using your LEGO mindstorms pieces, we can move along and see how we can program up the controller in the LEGO NXT <a href="inverted.html">[continue &raquo;]</a>.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2009-03-16 19:34:15 CET, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

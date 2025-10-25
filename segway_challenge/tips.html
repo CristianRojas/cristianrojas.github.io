@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>Lego Segway Challenge: an introduction to embedded control</title>
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Lego Segway Challenge: an introduction to embedded control</h1>
+</div>
+</div>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-item"><a href="index.html">Introduction</a></div>
+<div class="menu-category">Basic Analysis</div>
+<div class="menu-item"><a href="model.html">Modeling</a></div>
+<div class="menu-item"><a href="analysis.html">Analysis</a></div>
+<div class="menu-item"><a href="pcontrol.html">Controller&nbsp;Design</a></div>
+<div class="menu-category">Implementation</div>
+<div class="menu-item"><a href="imp.html">Control&nbsp;architecture</a></div>
+<div class="menu-item"><a href="crane.html">A&nbsp;LEGO&nbsp;crane</a></div>
+<div class="menu-item"><a href="inverted.html">Controller&nbsp;implementation</a></div>
+<div class="menu-item"><a href="action.html">Crane&nbsp;controller&nbsp;in&nbsp;action</a></div>
+<div class="menu-item"><a href="move.html">Controlling&nbsp;the&nbsp;base</a></div>
+<div class="menu-category">The Challenge!</div>
+<div class="menu-item"><a href="rules.html">Rules</a></div>
+<div class="menu-item"><a href="tips.html" class="current">Tips&nbsp;and&nbsp;tricks</a></div>
+<div class="menu-category">To Probe Further</div>
+<div class="menu-item"><a href="control.html">References</a></div>
+<div class="menu-item"><a href="contact.html">Credits&nbsp;and&nbsp;contact</a></div>
+</td>
+<td id="layout-content">
+<h2>Tips and tricks for making a SegWay</h2>
+<p>Now its time for you to make your own lego segway. A few things that should be considered is listed below.</p>
+<h3>Wheels and gears</h3>
+<p>When building the SegWay consider if its torque or speed that you are after. Might be wise to choose the dimensions of the wheels, and possibly even gears, with this in mind. This can make or break your project.</p>
+<h3>Dimension of the SegWay</h3>
+<p>You should also consider what dimension your machine should have. Consider what information we have about how the mass and lenght of the pendulum affects the speed of the system. Idealy you want as slow speed as possible to be able to stabilize the pendulum more easily.</p>
+<h3>Variables in programming</h3>
+<p>The Mindstorm unit rounds of all the numbers to integers, for instace <img class="eq" src="eqs/1499054875-130.png" alt="2.45" style="vertical-align: -1px" /> becomes <img class="eq" src="eqs/2105051955-130.png" alt="2" style="vertical-align: -0px" />. This can make a huge difference (especially when it comes to the drift and integration). You should find a way to handle this. </p>
+<h3>Tuning of the constants</h3>
+<p>Remember that the constants for the control mechanism is really important to be tuned properly. If it can&rsquo;t balance immidiatly then this is probably the problem. </p>
+<h2>Base contol when reference velocity is not zero</h2>
+<p>For the crane, we wanted the base to come to rest, <i>i.e.</i> the reference velocity was zero. In your case, you might want the reference velocity to be different than zero. One way to deal with this is to let the reference position be a ramp rather than a constant, <i>i.e.</i>, to use</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+#define REF_DELTA=1;
+
+int ref_pos=0;
+
+...
+ref_pos=ref_pos+REF_DELTA;
+error=ref_pos-x;
+...
+</pre></div></div>
+<p>Here, there is an apparent risk for overflow in the variable ref_pos, so an alternative could be to immediately hard code the reference velocity into the PID control algorithm, <i>i.e.</i> to use
+<br />
+<img class="eqwl" src="eqs/1313390118-130.png" alt=" frac{d}{dt}e(t)= frac{d}{dt} x_{rm ref}(t)-frac{d}{dt}x(t) = v_{rm ref}-frac{d}{dt}x(t) approx v_{rm ref}-(x(t)-x(t-T))/T " />
+<br />  
+Yet another solution could be to use a PID controller that tries to control the velocity of the base rather than its position. Feel free to explore these options!</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2009-03-16 19:34:16 CET, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

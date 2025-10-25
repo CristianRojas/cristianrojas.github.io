@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>Lego Segway Challenge: an introduction to embedded control</title>
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Lego Segway Challenge: an introduction to embedded control</h1>
+</div>
+</div>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-item"><a href="index.html">Introduction</a></div>
+<div class="menu-category">Basic Analysis</div>
+<div class="menu-item"><a href="model.html">Modeling</a></div>
+<div class="menu-item"><a href="analysis.html">Analysis</a></div>
+<div class="menu-item"><a href="pcontrol.html">Controller&nbsp;Design</a></div>
+<div class="menu-category">Implementation</div>
+<div class="menu-item"><a href="imp.html">Control&nbsp;architecture</a></div>
+<div class="menu-item"><a href="crane.html">A&nbsp;LEGO&nbsp;crane</a></div>
+<div class="menu-item"><a href="inverted.html">Controller&nbsp;implementation</a></div>
+<div class="menu-item"><a href="action.html">Crane&nbsp;controller&nbsp;in&nbsp;action</a></div>
+<div class="menu-item"><a href="move.html" class="current">Controlling&nbsp;the&nbsp;base</a></div>
+<div class="menu-category">The Challenge!</div>
+<div class="menu-item"><a href="rules.html">Rules</a></div>
+<div class="menu-item"><a href="tips.html">Tips&nbsp;and&nbsp;tricks</a></div>
+<div class="menu-category">To Probe Further</div>
+<div class="menu-item"><a href="control.html">References</a></div>
+<div class="menu-item"><a href="contact.html">Credits&nbsp;and&nbsp;contact</a></div>
+</td>
+<td id="layout-content">
+<p>It was apparently too simplistic to remove the base from our design, so let&rsquo;s re-introduce it in the figure below.</p>
+<p><center> <img class="eq" src="Pic/pend_with_base.png" alt="Data" height="260"/> </center></p>
+<p>We are now interested in designing a controller which dampens out the oscillations of the pendulum while forcing the base to come to a rest close to the initial position. </p>
+<h2>Control structure</h2>
+<p>If we should follow the philosophy from the earlier in the tutorial, the way to deal with the base would be to derive a differential equation describing how the applied motor torque influence the angle of the pendulum and the position of the base, and then design a controller that control the dynamics of both. We will not use this approach in this project for two reasons: first, it is quite complicated to develop such a model, and secondly, even if the model is given it would require more than high school math to analyze and understand how to control. To keep things simple, we are going to use the control structure shown in the figure below.</p>
+<p><center> <img class="eq" src="Pic/pend_control.png" alt="Control Structure" height="300"/> </center></p>
+<p>The basic idea is to keep the pendulum controller fixed and design an additional controller that controls the position of the base while accounting for the fact that the pendulum controller is now running (thus altering the system dynamics).</p>
+<p>If the balancing controller would work perfectly, one could imagine to disregarding the pendulum completely while modelling the brick position. Newton&rsquo;s law <img class="eq" src="eqs/1466111163-130.png" alt="F=ma" style="vertical-align: -1px" />, would result in a model on the form
+<br />
+<img class="eqwl" src="eqs/934637185-130.png" alt=" ddot{x}(t) = frac{1}{M}(-ddot{x}(t)+F(t)) " />
+<br />
+where <img class="eq" src="eqs/1748088629-130.png" alt="ddot{x}(t)" style="vertical-align: -5px" /> is the friction force. We could then design a controller for this dynamics using the same approach that we used for the pendulum. We are going to do something even more simple: we will simply propose a control structure, and tune the controller parameters by trial-and-error. </p>
+<p>The specific control structure we will use is called <i>PID control</i> (for proportional-integral-derivative control) and takes the form
+<br />
+<img class="eqwl" src="eqs/749813771-130.png" alt=" F(t) = k_p e(t) + k_d frac{d}{dt} e(t) + k_i int_{0}^{t} e(s) ; ds " />
+<br />
+where the control error <img class="eq" src="eqs/411236313-130.png" alt="e(t)=x_{rm ref}(t)-x(t)" style="vertical-align: -5px" /> is the error between the desired and actual position. Compared to the PD controller that we discovered earlier in the tutorial, this controller has an extra term proportional to the integral of the error. It turns out that this &ldquo;integral action&rdquo; is very useful for eliminating errors due to stationary disturbances, and to make the controller less sensitivt to differences between the model and the dynamics of the actual system. Despite its simplicity, the PID controller is still the dominant control structure in industry. Let&rsquo;s see how we can implement it in our LEGO Mindstorm kits.</p>
+<h2>Measuring the position of the brick</h2>
+<p>To control the position of the base, we need to be able to measure it. As discussed earlier, we will use the digital encoders on the motors to measure the position. The NXC command for doing so is </p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+motorPos=MotorTachoCount(outPort)
+</pre></div></div>
+<p>Since we are having two motors and we are moving on a straight line, we will use the average readings from the two motors as position estimate.</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+int motorPos=0;
+...
+motorPos=(MotorTachoCount(OUT_A)+MotorTachoCount(OUT_C))/2;
+</pre></div></div>
+<h2>Implementing the PID controller</h2>
+<p>To evaluate the PID control law
+<br />
+<img class="eqwl" src="eqs/749813771-130.png" alt=" F(t) = k_p e(t) + k_d frac{d}{dt} e(t) + k_i int_{0}^{t} e(s) ; ds " />
+<br />
+we needs to compute the control error, its derivative and maintain an estimate of the error integral. Using the approximations
+<br />
+<img class="eqwl" src="eqs/468207496-130.png" alt=" frac{d}{dt}e(t) approx frac{e(t)-e(t-T)}{T} " />
+<br />
+and 
+<br />
+<img class="eqwl" src="eqs/630603652-130.png" alt=" int_0^t e(s),ds approx int_0^{t-T} e(s),ds+ T e(t)  " />
+<br />
+We can see that we need to remember the error <img class="eq" src="eqs/309795662-130.png" alt="e(t)" style="vertical-align: -5px" /> and its integral <img class="eq" src="eqs/583395335-130.png" alt="i(t)=int_0^t e(s),ds" style="vertical-align: -8px" /> between sampling instants. This leads to the following PID controller code segment</p>
+<div class="codeblock">
+<div class="blockcontent"><pre>
+#define REFPOS 0
+#define PERIOD 10
+#define KP 1
+#define KI 1
+#define KD 1
+...
+
+int x;
+int error;
+int errorPrev=0;
+int errorIntegral=0;
+int errorDerivative=0;
+int control=0;
+...
+
+
+x=(MotorTachoCount(OUT_A)+MotorTachoCount(OUT_C))/2;
+
+error=REFPOS-x;
+errorIntegral=errorIntegral+error*PERIOD/1000
+errorDerivative=(error-errorPrev)*1000/PERIOD;
+control=KP*error+KI*errorIntegral+KD*errorDerivative;
+errorPrev=error;
+
+</pre></div></div>
+<p>You will then need to combine the control action suggested by the position controller with the one computed by the balancing controller before adjusting the total power to be in range and commanding it to the motors. You will see how we did all this in the code segment below.</p>
+<h2>Resulting robot and program</h2>
+<p>The complete code for the controller which combines the pendulum and position control can be found <a href="program/pend_no_position_control.nxc">here</a>. If you understand everything so far, then you are very well set for the Segway Challenge! Good luck!</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2009-03-16 19:34:15 CET, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

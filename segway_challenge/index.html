@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>Lego Segway Challenge: an introduction to embedded control</title>
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Lego Segway Challenge: an introduction to embedded control</h1>
+</div>
+</div>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-item"><a href="index.html" class="current">Introduction</a></div>
+<div class="menu-category">Basic Analysis</div>
+<div class="menu-item"><a href="model.html">Modeling</a></div>
+<div class="menu-item"><a href="analysis.html">Analysis</a></div>
+<div class="menu-item"><a href="pcontrol.html">Controller&nbsp;Design</a></div>
+<div class="menu-category">Implementation</div>
+<div class="menu-item"><a href="imp.html">Control&nbsp;architecture</a></div>
+<div class="menu-item"><a href="crane.html">A&nbsp;LEGO&nbsp;crane</a></div>
+<div class="menu-item"><a href="inverted.html">Controller&nbsp;implementation</a></div>
+<div class="menu-item"><a href="action.html">Crane&nbsp;controller&nbsp;in&nbsp;action</a></div>
+<div class="menu-item"><a href="move.html">Controlling&nbsp;the&nbsp;base</a></div>
+<div class="menu-category">The Challenge!</div>
+<div class="menu-item"><a href="rules.html">Rules</a></div>
+<div class="menu-item"><a href="tips.html">Tips&nbsp;and&nbsp;tricks</a></div>
+<div class="menu-category">To Probe Further</div>
+<div class="menu-item"><a href="control.html">References</a></div>
+<div class="menu-item"><a href="contact.html">Credits&nbsp;and&nbsp;contact</a></div>
+</td>
+<td id="layout-content">
+<h2>The Segway Personal Transporter</h2>
+<p>The Segway personal transporter is a two-wheeled, self-balanced
+electrical vehicle produced by Segway, Inc. Computers and motors in
+the base of the device keep the Segway upright, and the user steers
+the vehicle by simply leaning in the direction she wants to
+go. Gyroscopic sensors are used to detect the tilting of the device
+(which indicates departure from perfect balance) and motors driving
+the wheels are commanded as needed to bring the vehicle back into
+balance. If you have never seen a Segway in action, please take your
+time to watch the promotional video clip below.</p>
+<p><center><object width="425" height="344"><param name="movie"
+value="http://www.youtube.com/v/B-1hl05cqJM&hl=en&fs=1"></param><param
+name="allowFullScreen" value="true"></param><param
+name="allowscriptaccess" value="always"></param><embed
+src="http://www.youtube.com/v/B-1hl05cqJM&hl=en&fs=1"
+type="application/x-shockwave-flash" allowscriptaccess="always"
+allowfullscreen="true" width="425"
+height="344"></embed></object></center></p>
+<p>In this tutorial, we are going to build and control a Segway-like
+vehicle in LEGO Mindstorms. We will show how <i>control theory</i> can be
+used to develop simple and powerful strategies for maintaining the
+vehicle in balance. We will not dive into the theory in its fullest
+generality, but simply combine things you already know from high
+school physics and math. This will allow us to build a model of the
+vehicle dynamics and find out how the motors should be controlled to
+maintain balance. In doing so, we will reinvent the so-called &ldquo;PD-controller&rdquo; and use it to transform measurements of the tilt angle into the
+appropriate acceleration that should be supplied by the motors. We
+will discuss various way of measuring the tilt angle of the device,
+and show how the proposed controller can be implemented in the LEGO
+Mindstorm hardware.</p>
+<p>Afte the tutorial, we hope that you will have a basic insight into the use of control theory and that you will feel ready to make your Segway clone more than balance - to move and win the Segway challenge! <a href="model.html">[continue &raquo;]</a>.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2009-03-16 19:34:15 CET, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

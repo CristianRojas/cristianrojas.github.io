@@ -1,0 +1,38 @@
+# jemdoc: menu{MENU}{pcontrol.html}, fwtitle
+= Inverted Pendulum Control - A Lego Mindstorm SegWay  
+
+As we have seen, the dynamics of the pendulum can be altered by design: reducing the friction makes the pendulum swing for a longer time before coming to rest, and shortening the pendulum makes it swing with higher natural frequency. However, it may be expensive or impractical to use such physical design principles (doublig the natural frequency of a pendulum requires it to be four times as long, i.e. four times as expensive, taking up four times as much space). Furthermore, such designs are sensitive to external disturbances. It turns out that we can do much better by thinking a little extra. Stay on!
+
+== Control of Pendulum
+
+Let us re-introduce the external torque $T(t)$ in the dynamic equations for the pendulum. The linearized equations of motion become
+\( 
+	\ddot {\theta}(t)+a_1\dot{\theta}+a_2\theta(t)=b_0 T(t) 
+\)
+where $b_0=1/ml^2$. Now, let us choose $T(t)$ to be a linear combination of the deviation and rate of deviation from the stable equilibrium, i.e.
+\(
+	T(t) = -k_p \theta(t)-k_d\dot{\theta}(t)\qquad\qquad\quad\;\;\, (1)
+\)
+We then see that the controlled system can be described by a linear ODE
+\(
+	\ddot {\theta}(t)+\tilde{a}_1\dot{\theta}+\tilde{a}_2 \theta(t)=0 	
+\)
+where 
+\(
+\tilde{a}_1=a_1-b_0k_d, \quad \tilde{a}_2=a_2-b_0k_p \qquad (2)
+\)Thus, the controlled system can be described by a linear ODE,  whose coefficients ($\tilde{a}_1$ and $\tilde{a}_2$) can be choosen arbitrarily. In terms of the physical system, this means that the proper choice of $k_d$ and $k_p$ allows us to /assign arbitrary dynamics/ to the system.  
+
+As an example, let us assume that the desired dynamics is given by
+\(
+	\ddot {\theta}(t)+2\omega \dot{\theta}+\omega^2 \theta(t)=0 	
+\)
+i.e. that $\tilde{a}_1=2\omega$ and $\tilde{a}_2=\omega^2$ and the characteristic polynomial has a double root at $\lambda=-\omega$. By using the relationships (2) to solve for $k_p$ and $k_d$, we find that the desired dynamics can be obtained by the controller gains
+\(
+	k_p =(a_1-2\omega)/b_0, \quad
+	k_d =(a_2-\omega^2)/b_0 
+\)
+It is straghtforward to repeat the calculations for any other desired dynamics.
+
+
+The algorithm (1) for computing the controlled input is called a proportional-derivative controller, or PD-controller for short, since the magnitude of $T(t)$ is proportional to the angular error and its derivative. When the controlled input depends on the state of the system ($\theta(t)$ and $\dot{\theta}(t)$ in this case), we say that the controller uses \feedback\. Such controllers have many advantages (but also some drawbacks and fundamental limitations) that you will learn more about in your first automatic control course. But rather than dwelling into the theory now, let's try to get some hands-on experience using our Lego Mindstorm kits.
+

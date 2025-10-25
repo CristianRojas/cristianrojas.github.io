@@ -1,0 +1,43 @@
+# jemdoc: menu{MENU}{control.html}, fwtitle
+= Lego Segway Challenge: an introduction to embedded control
+
+Control Theory is the field on how to make something behave according to what is demanded of it. This can be a car, an airplane or a segway and the the demanded behaviour can be a certain speed, altitude or just to keep straight up.
+
+== Control Theory
+
+The main idea behind control theory is a desire to get a specific (usually better) behaviour out of a system. In this case it is how to make an unstable inverted pendulum to keep upright, i.e. stabilize it. But it could also be how to control the speed of a car by cruise control (and take into account slopes, wind and other disturbances) or how to give a robotic arm high enough precision to be used in surgery. This is achieved by applying a signal to a system, measuring the output and then using this difference, the error, as new input to the system. This process is called feedback.
+
+\input{contfig.tex}
+
+This process will ensure that the output follows the reference signal, although it will never reach the value completely. (What would the output $y(t)$ be if the error was zero?) 
+
+=== Controller
+
+A controller can implemented to help the behaviour when applying feedback. It can be designed to achieve better performance for the system in terms of stability, speed, error and noise cancellation. The controller (represented by the function $f(t)$) can be implemented in a lot of different ways but the basic is what is shown in figure FADFAS. The idea is that it acts on the error and calculates it before applying it as control signal $u(t)$ to the system. So the input to the system is now $u(t)=f(e(t))$ which gives the output as $y(t)=g(u(t)))=g(f(e(t)))$. The most common and basic controller is a Proportional-Integrational-Derivative controller or a PID-controller. 
+
+ Iteration of feedback with a controller: 
+
+. Applying an desired value (reference signal r(t)) as the input ($u(t)=r(t)$) to the system (here represented by the function $y(t)=g(u(t))$) which gives $y=g(r(t))$.
+. Measuring the output $y(t)$ from the system and calculating the error $e(t)=r(t)-y(t)$
+. The controller calculates the control signal based on the error $u(t)=f(e(t))$
+. Applying the control signal as input to the system $y(t)=g(u(t))=g(f(e(t)))=g(f(r(t)-y(t)))$
+. Restart from 2.
+
+====  PID-control
+
+The proportional part works by amplifying the error by multiplying it with a constant $K_p$. This gives the output as below. Be aware that the system usually has limitations on how big the input can be (a motor has a max voltage in for example) so increasing the $K_p$ to high might result in no change. Also high P-part results in very aggressive behaviour. 
+\( 
+	u(t)=K_p e(t) 
+\)
+The integrational part works by "remembering" the error and acting on this. This gives the effect that it can eliminate the error completely i.e. $e(t)=0$ because the output is equal to the reference $y(t)=r(t)$. It can also act to improve the speed of the system. It gives that the control signal part from the I-part is as below.
+\( 
+	u(t)=K_i \int e(t)\,dt 
+\)
+The derivative parts works by deriving the error, thus acting on the gradient and how the error is changing. If you look at the integral part as remembering, the derivational part looks into the future and reacts on what will come. It works by reducing how fast the system reacts on changes, making the changes less extreme. 
+\( 
+	u(t)=K_d \frac{d}{dt}e(t) 
+\)
+Combining these results in a PID-controller as shown below. The behaviour of the controller can be changed by tuning the constants.
+\(
+	u(t)=K_p e(t)+K_i \int e(t)\,dt+K_d \frac{d}{dt}e(t) 
+\)

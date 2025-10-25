@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>Lego Segway Challenge: an introduction to embedded control</title>
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Lego Segway Challenge: an introduction to embedded control</h1>
+</div>
+</div>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-item"><a href="index.html">Introduction</a></div>
+<div class="menu-category">Basic Analysis</div>
+<div class="menu-item"><a href="model.html">Modeling</a></div>
+<div class="menu-item"><a href="analysis.html">Analysis</a></div>
+<div class="menu-item"><a href="pcontrol.html" class="current">Controller&nbsp;Design</a></div>
+<div class="menu-category">Implementation</div>
+<div class="menu-item"><a href="imp.html">Control&nbsp;architecture</a></div>
+<div class="menu-item"><a href="crane.html">A&nbsp;LEGO&nbsp;crane</a></div>
+<div class="menu-item"><a href="inverted.html">Controller&nbsp;implementation</a></div>
+<div class="menu-item"><a href="action.html">Crane&nbsp;controller&nbsp;in&nbsp;action</a></div>
+<div class="menu-item"><a href="move.html">Controlling&nbsp;the&nbsp;base</a></div>
+<div class="menu-category">The Challenge!</div>
+<div class="menu-item"><a href="rules.html">Rules</a></div>
+<div class="menu-item"><a href="tips.html">Tips&nbsp;and&nbsp;tricks</a></div>
+<div class="menu-category">To Probe Further</div>
+<div class="menu-item"><a href="control.html">References</a></div>
+<div class="menu-item"><a href="contact.html">Credits&nbsp;and&nbsp;contact</a></div>
+</td>
+<td id="layout-content">
+<p>As we have seen, the dynamics of the pendulum can be altered by design: reducing the friction makes the pendulum swing for a longer time before coming to rest, and shortening the pendulum makes it swing with higher natural frequency. However, it may be expensive or impractical to use such physical design principles (doubling the natural frequency of a pendulum requires it to be four times as long, i.e. four times as expensive, taking up four times as much space). Furthermore, such designs are sensitive to external disturbances. It turns out that we can do much better by thinking a little extra. Stay on!</p>
+<h2>Control of Pendulum</h2>
+<p>Let us re-introduce the external torque <img class="eq" src="eqs/1273307595-130.png" alt="T(t)" style="vertical-align: -5px" /> in the dynamic equations for the pendulum. The linearized equations of motion become
+<br />
+<img class="eqwl" src="eqs/1036548413-130.png" alt="  ddot {theta}(t)+a_1dot{theta}+a_2theta(t)=b_0 T(t)  " />
+<br />
+where <img class="eq" src="eqs/901592043-130.png" alt="b_0=1/ml^2" style="vertical-align: -5px" />. Now, let us choose <img class="eq" src="eqs/1273307595-130.png" alt="T(t)" style="vertical-align: -5px" /> to be a linear combination of the deviation and rate of deviation from the stable equilibrium, i.e.
+<br />
+<img class="eqwl" src="eqs/462611745-130.png" alt=" T(t) = -k_p theta(t)-k_ddot{theta}(t)qquadqquadquad;;, (1) " />
+<br />
+We then see that the controlled system can be described by a linear ODE
+<br />
+<img class="eqwl" src="eqs/64851026-130.png" alt=" ddot {theta}(t)+tilde{a}_1dot{theta}+tilde{a}_2 theta(t)=0 	 " />
+<br />
+where 
+<br />
+<img class="eqwl" src="eqs/113216423-130.png" alt=" tilde{a}_1=a_1-b_0k_d, quad tilde{a}_2=a_2-b_0k_p qquad (2) " />
+<br />Thus, the controlled system can be described by a linear ODE,  whose coefficients (<img class="eq" src="eqs/1823760968-130.png" alt="tilde{a}_1" style="vertical-align: -3px" /> and <img class="eq" src="eqs/1823760971-130.png" alt="tilde{a}_2" style="vertical-align: -3px" />) can be choosen arbitrarily. In terms of the physical system, this means that the proper choice of <img class="eq" src="eqs/29142909-130.png" alt="k_d" style="vertical-align: -4px" /> and <img class="eq" src="eqs/29142889-130.png" alt="k_p" style="vertical-align: -6px" /> allows us to <i>assign arbitrary dynamics</i> to the system.  </p>
+<p>As an example, let us assume that the desired dynamics is given by
+<br />
+<img class="eqwl" src="eqs/797832025-130.png" alt=" ddot {theta}(t)+2omega dot{theta}+omega^2 theta(t)=0 	 " />
+<br />
+i.e. that <img class="eq" src="eqs/1361194576-130.png" alt="tilde{a}_1=2omega" style="vertical-align: -3px" /> and <img class="eq" src="eqs/248081136-130.png" alt="tilde{a}_2=omega^2" style="vertical-align: -3px" /> and the characteristic polynomial has a double root at <img class="eq" src="eqs/142615261-130.png" alt="lambda=-omega" style="vertical-align: -1px" />. By using the relationships (2) to solve for <img class="eq" src="eqs/29142889-130.png" alt="k_p" style="vertical-align: -6px" /> and <img class="eq" src="eqs/29142909-130.png" alt="k_d" style="vertical-align: -4px" />, we find that the desired dynamics can be obtained by the controller gains
+<br />
+<img class="eqwl" src="eqs/328410462-130.png" alt=" k_p =(a_1-2omega)/b_0, quad k_d =(a_2-omega^2)/b_0  " />
+<br />
+It is straghtforward to repeat the calculations for any other desired dynamics.</p>
+<p>The algorithm (1) for computing the controlled input is called a proportional-derivative controller, or PD-controller for short, since the magnitude of <img class="eq" src="eqs/1273307595-130.png" alt="T(t)" style="vertical-align: -5px" /> is proportional to the angular error and its derivative. When the controlled input depends on the state of the system (<img class="eq" src="eqs/1540459564-130.png" alt="theta(t)" style="vertical-align: -5px" /> and <img class="eq" src="eqs/66470203-130.png" alt="dot{theta}(t)" style="vertical-align: -5px" /> in this case), we say that the controller uses feedback. Such controllers have many advantages (but also some drawbacks and fundamental limitations) that you will learn more about in your first automatic control course. But rather than dwelling into the theory now, let&rsquo;s try to get some hands-on experience using our Lego Mindstorm kits <a href="imp.html">[continue &raquo;]</a>.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2009-03-16 19:34:15 CET, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

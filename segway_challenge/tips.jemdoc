@@ -1,0 +1,23 @@
+# jemdoc: menu{MENU}{tips.html}, fwtitle
+= Inverted Pendulum Control - A Lego Mindstorm SegWay  
+
+== Tips and tricks for making a SegWay
+
+
+Now its time for you to make your own lego segway. A few things that should be considered is listed below.
+
+=== Wheels and gears
+
+When building the SegWay consider if its torque or speed that you are after. Might be wise to choose the dimensions of the wheels, and possibly even gears, with this in mind. This can make or break your project.
+
+=== Dimension of the SegWay
+
+You should also consider what dimension your machine should have. Consider what information we have about how the mass and lenght of the pendulum affects the speed of the system. Idealy you want as slow speed as possible to be able to stabilize the pendulum more easily.
+
+=== Variables in programming
+
+The Mindstorm unit rounds of all the numbers to integers, for instace $2.45$ becomes $2$. This can make a huge difference (especially when it comes to the drift and integration). You should find a way to handle this. 
+
+=== Tuning of the constants
+
+Remember that the constants for the control mechanism is really important to be tuned propperly. If it can't balance immidiatly then this is probably the problem. 

@@ -1,0 +1,131 @@
+#include "NXCDefs.h"
+
+#define GYRO_PORT IN_4        //Gyro on port 1
+#define GYRO_Offset 620      //offset value to apply to the output value
+#define PERIOD 20   // [ms] tid mellan varje ny beräkning
+#define PERIOD_Gyro 10
+
+
+// Konstanter som reglerar motorstyrkan
+#define L1                     300
+#define L2                     30
+#define L3                     30
+#define L4                     5
+#define L5                     30
+#define Scale                  4000
+
+long Gyro_value;
+long drift=-3554;
+long Gyro_angle=0;
+long Motor_speed=0;
+long Motor_count=0;
+long Motor_old=0;
+long Motor_int=0;
+long time_g;
+
+int power,count,slen,time,fsize;
+string a,b,c,d,e,f,s;
+
+byte handle;
+
+// Motorvärden
+byte theUF;                                     // Update Flags
+byte theOM = OUT_MODE_MOTORON+OUT_MODE_BRAKE;   // Out Mode
+byte theRM = OUT_REGMODE_IDLE+OUT_REGMODE_SYNC; // Reg Mode
+byte theRS = OUT_RUNSTATE_RUNNING;              // Run State
+
+// Läs in sensorvärdet och beräkna mittenvärdet
+
+void calibrateSensor() {
+     TextOut(12, LCD_LINE3, "Calibrating!");
+     drift=0;
+     for (int i=1; i<1001 ;i++) {
+          drift=drift+SensorRaw(GYRO_PORT)-GYRO_Offset;
+          // NumOut(46, LCD_LINE5, drift);
+          Wait(10);
+     }
+     drift=drift/10;                          // Including T=0.1 and 100 samples
+     ClearScreen();
+     TextOut(10, LCD_LINE3, "drift is:");
+     NumOut(46, LCD_LINE5, drift);
+     Wait(3000);
+     ClearScreen();
+
+}
+
+task gyro() {
+	while (true) {        
+	time_g=CurrentTick();
+	Gyro_value = SensorRaw(GYRO_PORT)*100-GYRO_Offset*100-drift;
+	Gyro_angle = Gyro_angle+Gyro_value*PERIOD_Gyro/1000;
+	time_g=PERIOD_Gyro-CurrentTick()+time_g ;
+	Wait(time_g);
+  if (time_g < 0) {
+	       PlayTone(440, 10);
+   }
+	}
+}
+
+task balance() {
+
+     while (true) {
+         time=CurrentTick();
+
+         Motor_old=Motor_count;
+         Motor_count=100*(MotorTachoCount(OUT_B)+MotorTachoCount(OUT_C))/2;
+	       //Motor_count=MotorTachoCount(OUT_A);
+         // Motor_speed=(Motor_count-Motor_old)*1000/PERIOD;
+         Motor_int=Motor_int+Motor_count*PERIOD/1000;
+         // MotorTachoCount(OUT_B)
+         // MotorRotationCount(OUT_B)
+
+         //power=(-Gyro_angle*L1-Gyro_value*L2-Motor_count*L3-Motor_int*L5)/Scale;
+         
+         power=(-Gyro_angle*L1-Gyro_value*L2)/Scale;
+
+         //Motor_speed*L4
+         
+         a = NumToStr(power);
+
+   	     if (power > 100) {
+             power = 100;
+         } else if (power < -100) {
+             power = -100;
+         }
+         SetOutput(OUT_BC, UpdateFlags, theUF, Power, power);
+
+
+         b = NumToStr(Gyro_angle/100);
+         c = NumToStr(Gyro_value/100);
+         d = NumToStr(Motor_count/100);
+         e = NumToStr(Motor_int/100);
+	       f = NumToStr(time);
+         s = StrCat(a, " ", b, " ", c, " ", d, " ", e, " ", f, ";");
+         //string s = NumToStr(power);
+
+         WriteLnString(handle, s, slen);
+         time=PERIOD-CurrentTick()+time;
+         NumOut(46, LCD_LINE5, time);
+         //if (time < 0) {
+         //     time=0;
+	       // PlayTone(440, 10);
+         // }
+         Wait(time);
+     }
+}
+
+task main() {
+
+     theUF = UF_UPDATE_SPEED+UF_UPDATE_MODE;
+     SetOutput(OUT_BC, OutputMode, theOM, RegMode, theRM, RunState, theRS, UpdateFlags, theUF, Power, power);
+     theUF = UF_UPDATE_SPEED;
+          if (CreateFile("data_pos.txt", 40480, handle) == NO_ERR) {
+     } else if (OpenFileAppend("data_pos.txt", fsize, handle) == NO_ERR) {
+         s = "Ny";
+         WriteLnString(handle, s, slen);
+     }
+     calibrateSensor();
+     Precedes(balance,gyro);
+
+}
+

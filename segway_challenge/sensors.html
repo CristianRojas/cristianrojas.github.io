@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+  "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta name="generator" content="jemdoc, see http://jemdoc.jaboc.net/" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<link rel="stylesheet" href="jemdoc.css" type="text/css" />
+<title>Inverted Pendulum Control - A Lego Mindstorm SegWay  </title>
+</head>
+<body>
+<div id="fwtitle">
+<div id="toptitle">
+<h1>Inverted Pendulum Control - A Lego Mindstorm SegWay  </h1>
+</div>
+</div>
+<table summary="Table for page layout." id="tlayout">
+<tr valign="top">
+<td id="layout-menu">
+<div class="menu-item"><a href="index.html">Introduction</a></div>
+<div class="menu-category">Basic Analysis</div>
+<div class="menu-item"><a href="model.html">Modeling</a></div>
+<div class="menu-item"><a href="analysis.html">Analysis</a></div>
+<div class="menu-item"><a href="pcontrol.html">Controller&nbsp;Design</a></div>
+<div class="menu-category">Implementation</div>
+<div class="menu-item"><a href="imp.html">Control&nbsp;architecture</a></div>
+<div class="menu-item"><a href="crane.html">A&nbsp;LEGO&nbsp;crane</a></div>
+<div class="menu-item"><a href="inverted.html">Controller&nbsp;implementation</a></div>
+<div class="menu-item"><a href="action.html">Crane&nbsp;controller&nbsp;in&nbsp;action</a></div>
+<div class="menu-item"><a href="move.html">Controlling&nbsp;the&nbsp;base</a></div>
+<div class="menu-category">The Challenge!</div>
+<div class="menu-item"><a href="rules.html">Rules</a></div>
+<div class="menu-item"><a href="tips.html">Tips&nbsp;and&nbsp;tricks</a></div>
+<div class="menu-category">To Probe Further</div>
+<div class="menu-item"><a href="control.html">References</a></div>
+<div class="menu-item"><a href="contact.html">Credits&nbsp;and&nbsp;contact</a></div>
+</td>
+<td id="layout-content">
+<p><br />
+<img class="eqwl" src="eqs/1832153307-130.png" alt=" setlength{unitlength}{1mm} begin{picture}(110,50) put(15,35){vector(1,0){10}} put(25,25){framebox(20,20){textrm{Sensors}}} put(45,35){vector(1,0){10}} put(55,25){framebox(20,20){textrm{Computer}}} put(75,35){vector(1,0){10}} put(85,25){framebox(20,20){textrm{Actuators}}} end{picture} " />
+<br /></p>
+<p>In a controlled system there are three things acting; sensors, a control computer and actuators. Sensors are in the system to mesure what is happening at the moment, example is a sensor mesuring speed. The control computer calculates the desired control signal based on the input from the sensors. Last in the system is the actuators to act out the calculated control signal, exampel is a motor acting on a calculated voltage. In our case the mindstorm unit is the control computer, the motors are the actuators and the various sensors equals the sensors.</p>
+<h2>Sensors </h2>
+<p>In the pendulum system what needs to be mesured is two things; the angle <img class="eq" src="eqs/312907090-130.png" alt="theta" style="vertical-align: -1px" /> and the rate of change in the angle, <img class="eq" src="eqs/1458682473-130.png" alt="dot{theta}" style="vertical-align: -1px" />. The rate of change in the angle ,<img class="eq" src="eqs/1458682473-130.png" alt="dot{theta}" style="vertical-align: -1px" /> ,will be mesured with a gyro sensor, for the angle we could use a accelerometer or use the integration of the gyro. </p>
+<h3>Gyro sensor</h3>
+<p>A gyro sensor gives the rate of rotation <img class="eq" src="eqs/1458682473-130.png" alt="dot{theta}" style="vertical-align: -1px" />. Here we are also using a <a href="http://www.hitechnic.com/contents/en-us/d24.html">HiTechnic Gyro Sensor </a> which can give the rotation of up to <img class="eq" src="eqs/1484116703-130.png" alt="pm 360" style="vertical-align: -1px" /> degrees per second. </p>
+<p>A problem with gyro sensors is that they have a little bit of drift, i.e. the gyro always shows a value even if it is stationary. This means that to give a proper reading of the values the gyro has to be calibrated. A common (and very simple) way of doing this is compensating the error by just subtracting this error from the value. The error can be mesured by keeping the gyro stable for a couple of seconds and taking the average value. See below for the raw values, integration of these and the drift when not taken care of.</p>
+<p><img class="eq" src="Pic/drift.png" alt="Drift" style="vertical-align: -1px" /></p>
+<h3>Accelerometer/Tilt sensor</h3>
+<p>The <a href="http://www.hitechnic.com/contents/en-us/d19.html">accelerometer sensor </a> from HiTechnic can show both the acceleration (degrees per second<img class="eq" src="eqs/579238826-130.png" alt="^2" style="vertical-align: --6px" />, <img class="eq" src="eqs/1753039356-130.png" alt="ddot{theta}" style="vertical-align: -1px" />). The tilt is calculated by looking at how much the value of the gravitational force differs from the force in one direction. This method has a problem - as seen below the signal is very noisy and either has to be heavily filtrated or some other means of acquiring the angle has to be used. We choose to take the integration of the gyro which gives us <img class="eq" src="eqs/1345052155-130.png" alt="int dot{theta}=theta" style="vertical-align: -5px" />.</p>
+<p><img class="eq" src="Pic/tilt.png" alt="Tilt" style="vertical-align: -1px" /></p>
+<h3>Uncertanties in sensors</h3>
+<p>No method of acquiring data is perfect. Below is the mesurment of the angle of a pendulum. It shows three different ways of mesuring the angle, each with its own problem. The digital encoder is mesuring the angle from the base point. Since the pendulum in this case is not completely stiff, the mesurments get strange each time it changes direction. It is also not possible to use this when creating a inverted pendulum.</p>
+<p>The problem with the gyro is that since the angle is created with and integration, it might not react to fast changes as quickly as the other sensors. But the positive side is that the curve is without noise.</p>
+<p>As for the accelerometer the problems can clearlt be seen since the signal is very noisy. The reaction time of it is very fast though.</p>
+<p><img class="eq" src="Pic/data.png" alt="Data" style="vertical-align: -1px" /></p>
+<h2>Actuators/Motors</h2>
+<p>Used to control the systems are the supplied motors that comes with the mindstorm unit. They have an input range of <img class="eq" src="eqs/1362090657-130.png" alt="pm 100" style="vertical-align: -1px" />  which is mesured as percent of maximum power. This power is assumed to be proportional to the torque by some unknown constant. Since there is no model for the motor the power from the motor will be guessed with an trial and error method.</p>
+<h3>Encoders</h3>
+<p>The motors also have built in encoders that give a digital value of the angle of the motors, so the motors can be used to give information about the position of the base of the pendulum. This is important if we want the pendulum to stay in one position or keep a certain velocity which we will see later.</p>
+<h2>Programing Lego Mindstorm</h2>
+<p>Now that we know how what information we need we can start by looking at how to acquire it and how to use it. We want a way to process the information given by the sensors, calculate the desired output and aply it to the motors. Fortunatly Lego provides this functionality (and a lot more) in it Mindstorm unit.</p>
+<p>The Mindstorm block can be programmed in a few completely different ways - from using the built in tool on the block, to using a low level language very similar to assembler. What will be used in this exampel is the programming language Not eXactly C (NXC). It is a language that is fast but still intuitive to people with only a small experience in programming. It is based on C with the addition of some extra commands to interface with the mindstorm unit. Assumed is basic programming skills.</p>
+<h3>Not eXactly C</h3>
+<p>There is a lot of resourses online covering exactly how to program C and NXC so there is no use trying to explain what other already have done better. Below is a list of resources that will be helpful when programming.</p>
+<p><a href="http://bricxcc.sourceforge.net/nbc/nxcdoc/index.html">Not eXactly C Documentation </a> <p>
+<a href="http://www.hitechnic.com">HiTechnic Guides </a><p>
+<a href="http://www.hitechnic.com/contents/en-us/d24.html">HiTechnic Gyro Sensor </a><p>
+<a href="http://www.hitechnic.com/contents/en-us/d19.html">HiTechnic Acceleration Sensor </a></p>
+<h3>Bricx Command Center</h3>
+<p>To be able to program in NXC you need a compiler. The easiest one to use is Bricx Command Center which also includes a GUI and debugger. See <a href="http://bricxcc.sourceforge.net/">BricxCC</a> for download and guides. When you have familiarized yourself with NXC and set up so that NXC is owrking on you Mindstorm unit, move on to the next section.</p>
+<div id="footer">
+<div id="footer-text">
+Page generated 2009-03-16 19:34:16 CET, by <a href="http://jemdoc.jaboc.net/">jemdoc</a>.
+</div>
+</div>
+</td>
+</tr>
+</table>
+</body>
+</html>

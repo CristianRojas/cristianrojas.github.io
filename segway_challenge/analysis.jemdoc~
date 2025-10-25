@@ -1,0 +1,84 @@
+# jemdoc: menu{MENU}{analysis.html}, fwtitle
+= Inverted Pendulum Control - A Lego Mindstorm SegWay  
+
+Let us first consider the case when we do not apply any torque, i.e. when $T(t)=0$, and try to understand what the model predicts about the behaviour of the free system. Once we have understood this, it will become evident how we can choose $T(t)$ to shape the dynamic response of the pendulum. But let's not rush ahead of things: we'd better understand one thing at a time.
+
+== Solving linear ordinary differential equations
+
+When $T(t)=0$ our linearized pendulum model can be put in the form
+\(
+	\ddot{\theta}(t)+a_1\dot{\theta}(t)+a_2\theta(t) = 0
+\)
+where $a_1=b/ml^2$ and $a_2=-g/l$. This is a linear ordinary differential equation (ODE) of second order, and you have probably solved hundereds of these in math classes. The solution takes the form
+\(
+  \theta(t) = c(e^{\lambda_1 t}+e^{\lambda_2 t})
+\) 
+where $c$ is a constant depending on the initial angle and angular velocity, and $\lambda_1$ and $\lambda_2$ are solutions to the characteristic equation
+\(
+	s^2+a_1s+a_2 =0
+\)
+(if in doubt, just plug in the expression for $\theta(t)$ in the ODE and verify our claim).
+
+An important observation at this point is that the solutions to such a linear ODE will have three qualitatively different behaviours depending on the coefficients $a_1$ and $a_2$ (or, rather, depending on the real parts of the roots of the characteristic polynomial). If the real parts of the roots of the characteristic polynomial are negative, then $\theta(t)$ will tend to zero with time; purely imaginary roots imply that $\theta(t)$ is a sustained oscillation; and roots with positive real part indicate that $\theta(t)$ will grow unboundedly. 
+
+{{<img class="eq" src="Pic/pendfig.png" alt="Tilt" style="vertical-align: -1px" />}}
+
+
+== Analysis of the inverted pendulum equation
+
+Let's try to be more specific, and consider how the discussion above applies to our pendulum equation. 
+
+The characteristic polynomial of our model has roots
+\(
+	\lambda = -\frac{a_1}{2}\pm\sqrt{\frac{a_1^2+4a_2}{4}}=
+\frac{-b \pm \sqrt{b^2+4mg}}{2ml} 
+\)
+where we have simply plugged in the expression for $a_1$ and $a_2$ that applies to the pendulum. Since the expression under the root is greater than $b$, it is easy to see that the characteristic polynomial will always have one positive and one negative root. Thus, the linearized model predicts that, once the angle is perturbed from its upright equilibrium position, the angle will grow unboundedly. 
+
+It makes sense that the angle grows, since the upright position is unstable, but our intuition of a pendulum tells us that angle should not grow larger than $2\pi$ unless we inject energy into the system. What is wrong? 
+
+Remember the linearization? When we linearized the equations, we assumed that $\theta(t)$ remained small, but the unstable behaviour contradicts this assumption. If we solve the nonlinear ODE (we often refer to the process of solving the ODE describing a physical system as "simulating" the system), we get just the behaviour that we would expect. Releasing the pendulum from a 45 degree ($\pi/2$) angle, the pendulum falls freely, passing the downwards equilibrium at $\pi$ by a large margin before turning back. Due to fricition, a significant amount of energy is lost in each swing and eventually the pendulum comes at rest hanging down at an angle of $\pi$ radians with respect to the initial upwards position; see the figure below. In the same figure, you can also see how the linearized model agrees with the nonlinear model initially, but becomes inaccurate when the angle grows large. 
+
+{{<img class="eq" src="Pic/pend_nlsim.png" alt="Pendulum simulation: linear vs nonlinear" style="vertical-align: -1px" />}}
+
+Although these results were not very encouraging, remember that a good balancing controller will make sure that the angle remains small, so the linearization could still be (and, in fact, will be) good enough for control design. But before we proceed, let's try to see what the mathematical analysis can tell us about the pendulum around its stable downward equilibrium.
+
+== Analysis of the pendulum dynamics around its stable equilibrium
+
+Once we have understood the analysis for the inverted pendulum, it is easy to perform a similar analysis of the pendulum dynamics around its stable (downward) equilibrium; see the figure below.
+
+{{<center><img class="eq" src="Pic/pendulum.jpg" width=120 alt="Inverted pendulum" style="vertical-align: -1px" /></center>}}
+
+Note that we have redefined the angle $\theta(t)$ so that it is zero when the pendulum hangs straight down, and that gravity now acts to pull the pendulum back towards the equilibrium. Repeating the argument from before, we find that the pendulum dynamics can be described by
+\( ml^2\ddot{\theta}(t) =
+T(t)-mgl\sin \theta(t)-b\dot{\theta}(t) \) 
+In other words, it is only the gravity term that changes sign and the linearized equations for small angles becomes
+\(
+	\ddot{\theta}(t)+a_1\dot{\theta}(t)-a_2\theta(t) = 0
+\)
+whose characteristic equation has solutions
+\(
+	\lambda = -\frac{a_1}{2}\pm\sqrt{\frac{a_1^2-4a_2}{4}}=
+\frac{-b \pm \sqrt{b^2-4mg}}{2ml} 
+\)
+In this case, following our argument above, the square root term is less than $b$, so the roots of the characteristic polynomial always have negative real part. Thus, the model indicates that the system has a stable behaviour.
+
+In fact, there is an interesting limit case when there is no friction, i.e. when $b=0$. The characteristic equation then has solutions
+$\lambda = \pm i\sqrt{g/l}$, so if we assume that the pendulum starts at rest (zero angular velocity) at $\theta(0)$ the linear ODE has the solution
+\(
+\theta(t) = \theta(0)\left(e^{+i\sqrt{g/l}t}+e^{-i\sqrt{g/l}t}\right)=\theta(0) \cos (\sqrt{g/l}t) = \theta(0)\cos \omega_0 t
+\)
+where we have re-dis}covered that the natural frequency of a pendulum is $\omega_0=\sqrt{g/l}$. This expression conveys the fact that a shorter pendulum swings faster, but also quantifies that to half the natural frequency, we need to make the pendulum four times as long.
+
+
+#You are encouraged to work out the solution for the pendulum with friction later (the details can be found in the extras section), but l
+
+
+== Validating the pendulum model against reality
+
+Our analysis above indicate that the simple pendulum equation can reproduce, at least qualitatively, the behaviour of a physical pendulum. To verify that our model also can reproduce the behaviour of an actual pendulum,  we built a simple pendulum using the LEGO NXT and recorded an actual swing. The picture below shows that our model is capable of reproducing the true pendulum behaviour very accurately. 
+
+{{<center><img class="eq" src="Pic/model.png" alt="Drift" style="vertical-align: -1px" /></center>}}
+
+With a basic trust in our model, let's now proceed to see how we can choose $T(t)$ to shape the dynamic behaviour of the pendulum.
+
