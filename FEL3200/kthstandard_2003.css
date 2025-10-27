@@ -1,0 +1,936 @@
+BODY {
+    MARGIN-TOP: 0;
+    PADDING-TOP: 0;  
+    BACKGROUND-COLOR: #FFFFFF ;  
+}
+
+BODY, P, TD, UL, LI, DL, DT, DD
+{
+    COLOR: #000000;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 9pt;                                     /* skall vara 10 */
+    FONT-WEIGHT: normal
+
+}
+
+.fontbgcolor
+{
+    COLOR: #000000;
+    BACKGROUND-COLOR: #FFFF99;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 9pt;                                     /* skall vara 10 */
+    FONT-WEIGHT: normal
+}
+
+
+
+/*
+.body A
+{
+    TEXT-DECORATION: underline ! important ;
+    COLOR: #1954A6;
+}
+
+*/
+
+
+A:link
+{
+    COLOR: #1954A6;  
+    BACKGROUND-COLOR: transparent ; 
+/*    BACKGROUND-COLOR: #FFFFFF ;    */
+}
+
+
+A:visited
+{
+    COLOR: #0066CC;
+}
+
+
+
+B, STRONG, EM
+{
+    FONT-WEIGHT: bold
+}
+
+
+U
+{
+    TEXT-DECORATION: none
+}
+
+
+H1
+{
+    COLOR: #9D102D;
+    FONT-FAMILY: Arial, Helvetica, sans-serif;
+    FONT-SIZE: 16pt;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: none;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+}
+
+.H1_nyheter
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: Arial, Helvetica, sans-serif;
+    FONT-SIZE: 16pt;
+    FONT-WEIGHT: normal;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+    TEXT-DECORATION: none;
+    LINE-HEIGHT: 20px;
+}
+
+.H1_nyheter A:link, .H1_nyheter A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: Arial, Helvetica, sans-serif;
+    FONT-SIZE: 16pt;
+    FONT-WEIGHT: normal;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+    TEXT-DECORATION: none;
+    LINE-HEIGHT: 20px;
+}
+
+.H1nyheter
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: Arial, Helvetica, sans-serif;
+    FONT-SIZE: 16pt;
+    FONT-WEIGHT: normal;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+    TEXT-DECORATION: none;
+    LINE-HEIGHT: 20px;
+}
+
+.H1nyheter A:link, .H1nyheter A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: Arial, Helvetica, sans-serif;
+    FONT-SIZE: 16pt;
+    FONT-WEIGHT: normal;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+    TEXT-DECORATION: none;
+    LINE-HEIGHT: 20px;
+}
+
+H2
+{
+    COLOR: #676767;
+    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+    FONT-SIZE: 11pt;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+}
+
+// Added 2005-03-11 by Stenis
+
+.rubrik
+{
+    COLOR: #676767;
+    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+    FONT-SIZE: 11pt;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+}
+
+// End add
+.H2_nyheter
+{
+    COLOR: #9D102D;
+    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+    FONT-SIZE: 11pt;
+    FONT-WEIGHT: bold;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+    TEXT-DECORATION: none;
+    LINE-HEIGHT: 18px;
+}
+
+.H2_nyheter A:link, .H2_nyheter A:visited
+{
+    COLOR: #9D102D;
+    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+    FONT-SIZE: 11pt;
+    FONT-WEIGHT: bold;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+    TEXT-DECORATION: none;
+    LINE-HEIGHT: 18px;
+}
+
+.H2nyheter
+{
+    COLOR: #9D102D;
+    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+    FONT-SIZE: 11pt;
+    FONT-WEIGHT: bold;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+    TEXT-DECORATION: none;
+    LINE-HEIGHT: 18px;
+}
+
+.H2nyheter A:link, .H2nyheter A:visited
+{
+    COLOR: #9D102D;
+    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+    FONT-SIZE: 11pt;
+    FONT-WEIGHT: bold;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+    TEXT-DECORATION: none;
+    LINE-HEIGHT: 18px;
+}
+
+.p_nyheter
+{
+    COLOR: #000000;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 9pt;                                     /* skall vara 10 */
+    FONT-WEIGHT: normal;
+    LINE-HEIGHT: 12px;
+}
+
+.pnyheter
+{
+    COLOR: #000000;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 9pt;                                     /* skall vara 10 */
+    FONT-WEIGHT: normal;
+    LINE-HEIGHT: 12px;
+}
+
+
+.gra
+{
+    BACKGROUND: #DDDDDD;
+}
+
+A.gra
+{
+    BACKGROUND: #DDDDDD;
+}
+
+H3, H4, H5, H6
+{
+    COLOR: #000000;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+/*  BACKGROUND: #FFFFFF; */
+    BACKGROUND: transparent;
+}
+
+.small, SMALL
+{
+    COLOR: #000000;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 8pt;
+    FONT-WEIGHT: normal;
+}
+
+
+/* Detta är den som används när man har en linje direkt under */ 
+.blockrubrik
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+    FONT-SIZE: 9pt;
+    FONT-WEIGHT: bold;
+    BACKGROUND: #FFFFFF;
+}
+
+/* Kom till KTH */
+
+.interviewid
+{
+        COLOR: #999933;
+        FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+        FONT-SIZE: 10px;
+        FONT-WEIGHT: bold;
+        vertical-align : top;
+}
+
+.extern
+{
+        color:#666666;
+        FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+        FONT-SIZE: 10px;
+}
+
+/* KLASSER FÖR STARTSIDAN */
+
+H3.start
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    BACKGROUND: #FFFFFF;
+}
+
+H3.start A:link, H3.start A:visited
+{
+    COLOR: #1954A6;
+    FONT-SIZE: 10pt;
+    BACKGROUND: #FFFFFF;
+}
+
+.start
+{
+    FONT-SIZE: 8pt;
+    BACKGROUND: none;
+}
+
+.start A:link, .start A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: underline;
+    BACKGROUND: none;
+}
+
+.navlankstart
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.navlankstart A:link, .navlankstart A:visited
+{
+    COLOR: #1954A6;
+    TEXT-DECORATION: underline;
+    BACKGROUND: none;
+}
+
+.navlankstart_none
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.navlankstart_none A:link, .navlankstart_none A:visited
+{
+    COLOR: #1954A6;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.navlankstartnone
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.navlankstartnone A:link, .navlankstartnone A:visited
+{
+    COLOR: #1954A6;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+/* KLASSER FÖR UTBILDNING */
+
+OPTION
+{
+    COLOR: #000000;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 9pt;                                     /* skall vara 10 */
+    FONT-WEIGHT: normal
+}
+
+.utbnav
+{
+    COLOR: #000000;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 9px;
+    BACKGROUND-COLOR: #EEF4FA
+}
+
+/* REKRYTERING STARTSIDA */
+
+
+.green
+{
+    COLOR: #404616;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif; 
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.green A:link, .green A:visited
+{
+    COLOR: #404616;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.blue
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif; 
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.blue A:link, .blue A:visited
+{
+    COLOR: #1954A6;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.red
+{
+    COLOR: #9D102D;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif; 
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.red A:link, .red A:visited
+{
+    COLOR: #9D102D;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.nt2003_start
+{
+    COLOR: #B83636;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif; 
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.nt2003_start A:link, .nt2003_start A:visited
+{
+    COLOR: #B83636;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.nt2003start
+{
+    COLOR: #B83636;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif; 
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+.nt2003start A:link, .nt2003start A:visited
+{
+    COLOR: #B83636;
+    TEXT-DECORATION: none;
+    BACKGROUND: none;
+}
+
+
+.rekrytering
+{
+    COLOR: #677A27;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: #FFFFFF;
+}
+
+.rekrytering A:link, .rekrytering A:visited
+{
+    COLOR: #677A27;
+    BACKGROUND: #FFFFFF;
+}
+
+/* ALUMNI STARTSIDA */
+
+.alumni
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: #FFFFFF;
+}
+
+.alumni A:link, .alumni A:visited
+{
+    COLOR: #1954A6;
+    BACKGROUND: #FFFFFF;
+}
+
+
+/* KLASSER FÖR SIDHUVUDET */
+
+/* Detta är den översta raden i sidhuvudet */
+
+.sidhuvudlankfet
+{
+    COLOR: #ffffff;
+    BACKGROUND-COLOR: #B2B3B5;
+}
+
+.sidhuvudlankfet_nedflyttad
+{
+    COLOR: #1954A6;
+    BACKGROUND-COLOR: #ffffff;
+}
+
+.sidhuvudlankfetnedflyttad
+{
+    COLOR: #1954A6;
+    BACKGROUND-COLOR: #ffffff;
+}
+
+.sidhuvudlankfet A:link, .sidhuvudlankfet A:visited,
+B.sidhuvudlankfet A:link, B.sidhuvudlankfet A:visited
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: transparent;
+    /* BACKGROUND-COLOR: #1954A6; */
+}
+
+.sidhuvudlankfet_nedflyttad A:link, .sidhuvudlankfet_nedflyttad A:visited,
+B.sidhuvudlankfet_nedflyttad A:link, B.sidhuvudlankfet_nedflyttad A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: underline;
+    BACKGROUND: transparent;
+    /* BACKGROUND-COLOR: #1954A6; */
+}
+
+.sidhuvudlankfetnedflyttad A:link, .sidhuvudlankfetnedflyttad A:visited,
+B.sidhuvudlankfetnedflyttad A:link, B.sidhuvudlankfetnedflyttad A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: underline;
+    BACKGROUND: transparent;
+    /* BACKGROUND-COLOR: #1954A6; */
+}
+
+.sidhuvudlankfet_2003 A:link, .sidhuvudlankfet_2003 A:visited,
+B.sidhuvudlankfet_2003 A:link, B.sidhuvudlankfet_2003 A:visited
+{
+    COLOR: #0077BD;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: transparent;
+    /* BACKGROUND-COLOR: #1954A6; */
+}
+
+.sidhuvudlankfet2003 A:link, .sidhuvudlankfet2003 A:visited,
+B.sidhuvudlankfet2003 A:link, B.sidhuvudlankfet2003 A:visited
+{
+    COLOR: #0077BD;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: transparent;
+    /* BACKGROUND-COLOR: #1954A6; */
+}
+
+/* Detta är rubriken i sidhuvudet */
+.sidhuvudrubrik, .sidhuvudrubrik A:link, .sidhuvudrubrik A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: Arial, Helvetica, sans-serif;
+    FONT-SIZE: 19px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: transparent;
+    /* BACKGROUND: #FFFFFF; */
+}
+
+/* detta är underrubriken i sidhuvudet */
+.sidhuvudomrade, .sidhuvudomrade A:link, .sidhuvudomrade A:visited
+{
+    COLOR: #808080;
+    FONT-FAMILY: Arial, Helvetica, sans-serif;
+    FONT-SIZE: 16px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: transparent;
+    /* BACKGROUND: #FFFFFF; */
+}
+
+/* detta är underrubriken i sidhuvudet för Natur- och teknikvetenskap 2003 */
+
+.sidhuvudomrade_nt2003, .sidhuvudomrade_nt2003 A:link, .sidhuvudomrade_nt2003 A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: Arial, Helvetica, sans-serif;
+    FONT-SIZE: 17px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: transparent;
+    /* BACKGROUND: #FFFFFF; */
+}
+
+.sidhuvudomradent2003, .sidhuvudomradent2003 A:link, .sidhuvudomradent2003 A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: Arial, Helvetica, sans-serif;
+    FONT-SIZE: 17px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: transparent;
+    /* BACKGROUND: #FFFFFF; */
+}
+
+/* ger rutorna i bakgrunden på sidhuvudet */
+
+.rutbakgrund
+{
+/* color: #ffffff  ; */
+background: white url('/delad/grafik/rutor2_2003.gif') no-repeat ;
+
+}
+
+
+
+
+/* Denna klass med pseudoklass är för sökvägen/navigationen i undre delen av sidhuvudet */
+
+.sokvag
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    BACKGROUND-COLOR: #1954A6;
+}
+
+.sokvag_nedflyttad
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+}
+
+.sokvagnedflyttad
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+}
+
+.sokvag A:link, .sokvag A:visited
+{
+    COLOR: #ffffff;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline;
+    BACKGROUND: transparent;
+    /* BACKGROUND-COLOR: #1954A6; */
+}
+
+.sokvag_nedflyttad A:link, .sokvag_nedflyttad A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline; 
+}
+
+.sokvagnedflyttad A:link, .sokvagnedflyttad A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline; 
+}
+
+.navrubrik
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 12px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: underline
+}
+
+
+/* Ger den blå färgen i de horisontella listerna i sidhuvudet */
+
+
+.huvudlist
+{
+    COLOR: #1954A6;
+    BACKGROUND: #1954A6;
+}
+
+
+/* KLASSER FÖR NAVIGATIONSSPALTEN */
+
+
+/* En klass för respektive nivå gällande länkarna i navigationsspalten */
+
+.navlank1
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: #D9D9D9;
+}
+
+.navlank1 A:link, .navlank1 A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: underline;
+    BACKGROUND: #D9D9D9;
+}
+
+.navlank1_under
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: none;
+    BACKGROUND: #E5E5E5;
+}
+
+.navlank1_under A:link, .navlank1_under A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline;
+    BACKGROUND: #E5E5E5;
+}
+
+.navlank1under
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: none;
+    BACKGROUND: #E5E5E5;
+}
+
+.navlank1under A:link, .navlank1under A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline;
+    BACKGROUND: #E5E5E5;
+}
+
+.navlank1_under2
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    TEXT-DECORATION: none;
+    BACKGROUND: #FFFFFF;
+}
+
+.navlank1_under2 A:link, .navlank1_under2 A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline;
+    BACKGROUND: #FFFFFF;
+}
+
+.navlank1under2
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    TEXT-DECORATION: none;
+    BACKGROUND: #FFFFFF;
+}
+
+.navlank1under2 A:link, .navlank1under2 A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline;
+    BACKGROUND: #FFFFFF;
+}
+
+.navlank2 A:link, .navlank2 A:visited
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline;
+    BACKGROUND: #DDDDDD;
+}
+
+.navlank3
+{
+    COLOR: #999999;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: none;
+    BACKGROUND: #DDDDDD;
+}
+
+.navlank3 A:link, .navlank3 A:visited
+{
+    COLOR: #999999;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: underline;
+    BACKGROUND: #DDDDDD;
+}
+
+/* SIDFOTEN */
+
+.sidfottext
+{
+    COLOR: #B2B3B5;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    /* FONT-WEIGHT: normal */
+}
+
+
+
+.sidfottext A:link, 
+.sidfottext A:visited, 
+TD.sidfottext B A:link, 
+TD.sidfottext B A:visited,
+DIV.sidfottext B A:link, 
+DIV.sidfottext B A:visited
+
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline;
+}
+
+
+/* GAMMALT */
+
+
+.sidfottextfet
+{
+    COLOR: #B2B3B5;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold;
+    BACKGROUND: #FFFFFF;
+}
+.sidfotmaillank
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline;
+    BACKGROUND: #FFFFFF;
+}
+
+.maillankar
+{
+    COLOR: #1954A6;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10pt;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: underline
+}
+.mainkommentar
+{
+    COLOR: #666666;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px
+}
+
+.navigationtext
+{
+    COLOR: #000000;
+    FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: normal;
+    TEXT-DECORATION: none
+}
+.navigationrubrik
+{
+    COLOR: #000000;
+    FONT-FAMILY: verdana, arial, helvetica, sans-serif;
+    FONT-SIZE: 10px;
+    FONT-WEIGHT: bold
+}
+.firstbrodtext { COLOR: #000000; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: 9pt; FONT-WEIGHT: normal }
+.firstlankarfet { COLOR: #1954A6; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: 10px; FONT-WEIGHT: bold; text-decoration: underline }
+.mainlank { COLOR: #1954A6; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: 9pt; FONT-WEIGHT: normal; TEXT-DECORATION: underline }
+.firstlankliten { COLOR: #1954A6; FONT-FAMILY: verdana, arial, helvetica, sans-serif; FONT-SIZE: 9pt; FONT-WEIGHT: normal ; text-decoration: underline }
+
+/* Added by Stenis stenis@s3.kth.se */
+.formselect {
+        font-size: 10px
+}
